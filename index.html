@@ -50,6 +50,11 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;backgroun
 nav.tabs{display:flex;gap:4px;background:var(--surface-2);padding:4px;border-radius:999px}
 nav.tabs button{border:0;background:none;padding:7px 14px;border-radius:999px;cursor:pointer;font-weight:600;font-size:13.5px;color:var(--muted);white-space:nowrap}
 nav.tabs button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.theme-toggle{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;width:38px;height:38px;display:grid;place-items:center;cursor:pointer;flex:none;transition:background .15s,border-color .15s}
+.theme-toggle:hover{border-color:var(--blue);background:var(--surface-2)}
+.theme-toggle .i-sun{display:none}
+:root[data-theme="dark"] .theme-toggle .i-sun{display:block}
+:root[data-theme="dark"] .theme-toggle .i-moon{display:none}
 nav.tabs .count{display:inline-block;min-width:18px;padding:0 5px;margin-left:4px;border-radius:9px;background:var(--blue);color:var(--blue-ink);font:600 11px/18px var(--f-mono);text-align:center}
 
 /* Hero */
@@ -221,6 +226,12 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:v
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
+<script>
+/* Apply the saved (or system) theme before first paint to avoid a flash */
+(function(){var t=null;try{t=localStorage.getItem("sdf-theme")}catch(_){}
+if(t!=="light"&&t!=="dark")t=window.matchMedia&&matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light";
+document.documentElement.setAttribute("data-theme",t)})();
+</script>
 
 <header class="top">
   <div class="wrap">
@@ -233,6 +244,10 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:v
       <button role="tab" id="tab-mine" data-view="mine" aria-selected="false">My registrations<span class="count" id="mineCount" hidden>0</span></button>
       <button role="tab" id="tab-organizer" data-view="organizer" aria-selected="false" hidden>Organizer</button>
     </nav>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode">
+      <svg class="i-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/></svg>
+      <svg class="i-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
+    </button>
   </div>
 </header>
 
@@ -645,6 +660,20 @@ $("#exportCsv").addEventListener("click",async()=>{
   try{await dl.save({filename:"sdf-2027-registrations.csv",data:new Blob([csv],{type:"text/csv"})});toast("Export ready")}
   catch(e){if(e&&e.code!=="declined")toast("Couldn't export. Try again.")}
 });
+
+/* ---------- Theme ---------- */
+function syncThemeButton(){
+  const dark=document.documentElement.getAttribute("data-theme")==="dark";
+  const label=dark?"Switch to day mode":"Switch to dark mode";
+  const b=$("#themeToggle");b.setAttribute("aria-label",label);b.title=label;
+}
+$("#themeToggle").addEventListener("click",()=>{
+  const next=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";
+  document.documentElement.setAttribute("data-theme",next);
+  try{localStorage.setItem("sdf-theme",next)}catch(_){}
+  syncThemeButton();
+});
+syncThemeButton();
 
 /* ---------- Boot ---------- */
 let initial="events";try{const h=location.hash.replace("#","");if(["events","mine","organizer"].includes(h))initial=h}catch(_){}
