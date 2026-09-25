@@ -42,11 +42,8 @@ button,input,select,textarea{font:inherit;color:inherit}
 header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);margin-inline:-16px;padding-inline:16px}
 .top .wrap{display:flex;align-items:center;gap:16px;min-height:62px;flex-wrap:wrap;padding-block:8px}
 .brand{display:flex;align-items:center;gap:10px;margin-right:auto}
-.seal{width:38px;height:38px;border-radius:50%;border:2px solid var(--blue);display:grid;place-items:center;flex:none;position:relative}
-.seal b{font:800 11px/1 var(--f-display);color:var(--gold);letter-spacing:.02em}
-.brand-text{display:flex;flex-direction:column;line-height:1.15}
-.brand-text strong{font:700 15px/1.2 var(--f-display)}
-.brand-text span{font-size:12px;color:var(--muted);font-family:"Noto Sans Khmer",var(--f-body)}
+.brand-logo{display:block;height:44px;width:auto;flex:none}
+:root[data-theme="dark"] .brand-logo{background:#fff;border-radius:8px;padding:3px 8px;box-sizing:content-box}
 nav.tabs{display:flex;gap:4px;background:var(--surface-2);padding:4px;border-radius:999px}
 nav.tabs button{border:0;background:none;padding:7px 14px;border-radius:999px;cursor:pointer;font-weight:600;font-size:13.5px;color:var(--muted);white-space:nowrap}
 nav.tabs button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
@@ -85,7 +82,10 @@ nav.tabs .count{display:inline-block;min-width:18px;padding:0 5px;margin-left:4p
 .chip{border:1px solid var(--line);background:var(--surface);padding:6px 12px;border-radius:999px;cursor:pointer;font-size:13px;font-weight:500}
 .chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:12px;scroll-margin-top:90px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:12px;scroll-margin-top:90px;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+@media (hover:hover){.card:hover{transform:translateY(-4px);border-color:var(--blue);box-shadow:var(--shadow)}}
+.card-cover img{transition:transform .35s ease}
+@media (hover:hover){.card:hover .card-cover img{transform:scale(1.03)}}
 .card.hl{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}
 .card-cover{margin:-18px -18px 0;border-radius:var(--r) var(--r) 0 0;overflow:hidden;aspect-ratio:16/9;background:#fff;flex:none}
 .card-cover img{width:100%;height:100%;object-fit:contain;display:block}
@@ -220,7 +220,7 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:v
   .grid{grid-template-columns:1fr}
   .fields{grid-template-columns:1fr}
   .ribbon{grid-template-columns:repeat(4,1fr)}
-  .brand-text span{display:none}
+  .brand-logo{height:36px}
   nav.tabs{width:100%;justify-content:space-between}
   nav.tabs button{padding:7px 10px;flex:1}
   .evpick label{grid-template-columns:auto 38px 1fr}
@@ -238,8 +238,7 @@ document.documentElement.setAttribute("data-theme",t)})();
 <header class="top">
   <div class="wrap">
     <div class="brand">
-      <div class="seal" aria-hidden="true"><b>SDF</b></div>
-      <div class="brand-text"><strong>Skills Development Fund</strong><span>មូលនិធិអភិវឌ្ឍន៍ជំនាញ</span></div>
+      <img class="brand-logo" src="assets/img/Horizontal-Logo.2-cropped.png" alt="Skills Development Fund · មូលនិធិអភិវឌ្ឍន៍ជំនាញ" width="6600" height="2136">
     </div>
     <nav class="tabs" role="tablist" aria-label="Sections">
       <button role="tab" id="tab-events" data-view="events" aria-selected="true">Events</button>
