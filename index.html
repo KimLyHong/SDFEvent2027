@@ -1,0 +1,676 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>SDF Events 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Khmer:wght@400;600&display=swap">
+<style>
+:root{
+  --bg:#F3F6FA; --surface:#FFFFFF; --surface-2:#EAF0F7; --ink:#0D2137; --muted:#56687D; --line:#D5DEE9;
+  --blue:#0667B8; --blue-ink:#FFFFFF; --blue-soft:#DCEAF8; --gold:#A8801F; --gold-soft:#F6EDD6;
+  --ok:#1E7A4C; --ok-soft:#DDF2E6; --warn:#9A5B00; --warn-soft:#FBEBD2; --bad:#B42318; --bad-soft:#FBE3E1;
+  --shadow:0 1px 2px rgba(13,33,55,.06),0 8px 24px rgba(13,33,55,.08);
+  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --f-body:"Noto Sans","Noto Sans Khmer",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  color-scheme:dark;
+  --bg:#0A1521; --surface:#112032; --surface-2:#172a40; --ink:#E4EDF7; --muted:#9AAEC4; --line:#24384F;
+  --blue:#4FA3EE; --blue-ink:#06192B; --blue-soft:#15324F; --gold:#DDB65C; --gold-soft:#2E2715;
+  --ok:#5CCB8F; --ok-soft:#123324; --warn:#F0B35A; --warn-soft:#33250F; --bad:#F2877D; --bad-soft:#3A1614;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.3);
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0A1521; --surface:#112032; --surface-2:#172a40; --ink:#E4EDF7; --muted:#9AAEC4; --line:#24384F;
+  --blue:#4FA3EE; --blue-ink:#06192B; --blue-soft:#15324F; --gold:#DDB65C; --gold-soft:#2E2715;
+  --ok:#5CCB8F; --ok-soft:#123324; --warn:#F0B35A; --warn-soft:#33250F; --bad:#F2877D; --bad-soft:#3A1614;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font:15px/1.55 var(--f-body);padding-inline:16px;padding-block:0 48px}
+.wrap{max-width:1120px;margin-inline:auto}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:-.01em}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.eyebrow{font:500 11.5px/1.2 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+
+/* Header */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);margin-inline:-16px;padding-inline:16px}
+.top .wrap{display:flex;align-items:center;gap:16px;min-height:62px;flex-wrap:wrap;padding-block:8px}
+.brand{display:flex;align-items:center;gap:10px;margin-right:auto}
+.seal{width:38px;height:38px;border-radius:50%;border:2px solid var(--blue);display:grid;place-items:center;flex:none;position:relative}
+.seal b{font:800 11px/1 var(--f-display);color:var(--gold);letter-spacing:.02em}
+.brand-text{display:flex;flex-direction:column;line-height:1.15}
+.brand-text strong{font:700 15px/1.2 var(--f-display)}
+.brand-text span{font-size:12px;color:var(--muted);font-family:"Noto Sans Khmer",var(--f-body)}
+nav.tabs{display:flex;gap:4px;background:var(--surface-2);padding:4px;border-radius:999px}
+nav.tabs button{border:0;background:none;padding:7px 14px;border-radius:999px;cursor:pointer;font-weight:600;font-size:13.5px;color:var(--muted);white-space:nowrap}
+nav.tabs button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+nav.tabs .count{display:inline-block;min-width:18px;padding:0 5px;margin-left:4px;border-radius:9px;background:var(--blue);color:var(--blue-ink);font:600 11px/18px var(--f-mono);text-align:center}
+
+/* Hero */
+.hero{display:grid;grid-template-columns:1.25fr 1fr;gap:32px;align-items:end;padding-block:40px 28px}
+.hero h1{font-size:clamp(34px,5.4vw,60px);line-height:1.02;font-weight:800}
+.hero h1 em{font-style:normal;color:var(--blue)}
+.hero p.lead{color:var(--muted);max-width:56ch;margin:14px 0 0;font-size:16px}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.facts div{background:var(--surface);padding:14px 16px}
+.facts b{display:block;font:700 26px/1.1 var(--f-display);font-variant-numeric:tabular-nums}
+.facts span{font-size:12.5px;color:var(--muted)}
+
+/* Year ribbon */
+.ribbon{display:grid;grid-template-columns:repeat(12,1fr);gap:6px;margin-block:4px 32px}
+.ribbon button{all:unset;cursor:pointer;display:flex;flex-direction:column;gap:6px;padding:10px 8px 12px;border-radius:8px;background:var(--surface);border:1px solid var(--line);min-width:0;transition:transform .15s,border-color .15s}
+.ribbon button:hover{transform:translateY(-2px);border-color:var(--blue)}
+.ribbon button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.ribbon .m{font:500 11px/1 var(--f-mono);letter-spacing:.08em;color:var(--muted)}
+.ribbon .s{font:600 12.5px/1.25 var(--f-body);overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.ribbon .bar{height:4px;border-radius:2px;background:var(--blue-soft)}
+.ribbon .flag .bar{background:var(--gold)}
+.ribbon .flag{background:var(--gold-soft)}
+.ribbon .mine .bar{background:var(--blue)}
+
+/* Filters + grid */
+.bar-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--surface);padding:6px 12px;border-radius:999px;cursor:pointer;font-size:13px;font-weight:500}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:12px;scroll-margin-top:90px}
+.card.hl{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}
+.card-head{display:flex;gap:14px;align-items:flex-start}
+.datebox{flex:none;width:56px;text-align:center;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.datebox .mo{background:var(--blue);color:var(--blue-ink);font:600 11px/20px var(--f-mono);letter-spacing:.1em}
+.flagship .datebox .mo{background:var(--gold);color:#1a1405}
+.datebox .d{font:700 22px/34px var(--f-display);font-variant-numeric:tabular-nums}
+.card h3{font-size:18px;line-height:1.2;font-weight:700}
+.card .sub{color:var(--muted);font-size:13px;margin-top:4px}
+.meta{display:grid;gap:4px;font-size:13px;color:var(--muted)}
+.meta div{display:flex;gap:8px}
+.meta svg{flex:none;margin-top:3px}
+.tag{display:inline-flex;align-items:center;gap:5px;font:500 11px/1 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border-radius:4px;background:var(--surface-2);color:var(--muted)}
+.tag.flagship{background:var(--gold-soft);color:var(--gold)}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px}
+.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}
+.pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.bad{background:var(--bad-soft);color:var(--bad)}
+.pill.me{background:var(--blue-soft);color:var(--blue)}
+.card-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:12px;border-top:1px dashed var(--line);flex-wrap:wrap}
+.seats{font-size:12.5px;color:var(--muted)}
+.meter{height:5px;border-radius:3px;background:var(--surface-2);overflow:hidden;width:110px;margin-top:5px}
+.meter i{display:block;height:100%;background:var(--blue)}
+
+.btn{border:1px solid transparent;background:var(--blue);color:var(--blue-ink);padding:9px 16px;border-radius:8px;font-weight:600;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.btn:hover{filter:brightness(1.07)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.ghost:hover{background:var(--surface-2);filter:none}
+.btn.danger{background:transparent;color:var(--bad);border-color:var(--bad-soft)}
+.btn.small{padding:6px 11px;font-size:13px}
+.btn[disabled]{opacity:.5;cursor:not-allowed;filter:none}
+.linkish{background:none;border:0;padding:0;color:var(--blue);font-weight:600;cursor:pointer;font-size:13.5px}
+
+.notice{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:8px;background:var(--warn-soft);color:var(--ink);font-size:13.5px;margin-block:0 16px;border:1px solid color-mix(in srgb,var(--warn) 30%,transparent)}
+.notice.info{background:var(--blue-soft);border-color:color-mix(in srgb,var(--blue) 25%,transparent)}
+
+/* Drawer */
+.scrim{position:fixed;inset:0;background:rgba(6,16,28,.5);z-index:50;display:flex;justify-content:flex-end}
+.drawer{background:var(--bg);width:min(560px,100%);height:100%;overflow-y:auto;display:flex;flex-direction:column;box-shadow:-10px 0 40px rgba(0,0,0,.25);animation:slide .22s ease-out}
+@keyframes slide{from{transform:translateX(30px);opacity:.4}to{transform:none;opacity:1}}
+.drawer-head{padding:20px 22px 16px;padding-top:calc(20px + env(safe-area-inset-top,0px));background:var(--surface);border-bottom:1px solid var(--line);display:flex;gap:12px;align-items:flex-start;position:sticky;top:0;z-index:2}
+.drawer-head h2{font-size:22px;line-height:1.15}
+.drawer-body{padding:20px 22px calc(28px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:20px}
+.x{margin-left:auto;border:1px solid var(--line);background:var(--surface);border-radius:8px;width:36px;height:36px;cursor:pointer;flex:none;display:grid;place-items:center}
+.section-title{font:600 13px/1.2 var(--f-body);color:var(--muted);margin-bottom:10px;display:flex;justify-content:space-between;gap:8px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fields .full{grid-column:1/-1}
+label.f{display:flex;flex-direction:column;gap:5px;font-size:13px;font-weight:600}
+label.f .opt{font-weight:400;color:var(--muted)}
+.f input,.f select,.f textarea{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:9px 11px;font-weight:400;font-size:14.5px;width:100%;min-width:0}
+.f textarea{resize:vertical;min-height:64px}
+.f input:focus,.f select:focus,.f textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}
+.f .err{color:var(--bad);font-weight:500;font-size:12px}
+.f.invalid input,.f.invalid select{border-color:var(--bad)}
+.evpick{display:grid;gap:6px}
+.evpick label{display:grid;grid-template-columns:auto 44px 1fr auto;gap:10px;align-items:center;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);cursor:pointer;font-size:13.5px}
+.evpick label:has(input:checked){border-color:var(--blue);background:var(--blue-soft)}
+.evpick label.dis{opacity:.55;cursor:not-allowed}
+.evpick .mm{font:500 11px var(--f-mono);letter-spacing:.08em;color:var(--muted)}
+.evpick .st{font-size:11.5px;color:var(--muted)}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:13.5px}
+.check input{margin-top:3px;width:16px;height:16px;flex:none;accent-color:var(--blue)}
+input[type=checkbox]{accent-color:var(--blue)}
+.formfoot{display:flex;gap:10px;justify-content:flex-end;align-items:center;flex-wrap:wrap;position:sticky;bottom:0;background:var(--bg);padding-block:12px;border-top:1px solid var(--line)}
+.formerr{color:var(--bad);font-size:13px;margin-right:auto}
+
+.detail-grid{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14px}
+.detail-grid dt{color:var(--muted)}
+.detail-grid dd{margin:0}
+.aud{display:flex;flex-wrap:wrap;gap:6px}
+.agenda{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);overflow:hidden}
+.agenda li{display:grid;grid-template-columns:64px 1fr;gap:12px;padding:10px 14px;border-top:1px solid var(--line);position:relative}
+.agenda li:first-child{border-top:0}
+.agenda .at{color:var(--blue);font-weight:500;font-size:13px;padding-top:1px}
+.agenda .as{font-weight:600;font-size:14px;line-height:1.35}
+.agenda .aw{font-size:12.5px;color:var(--muted);margin-top:2px}
+.outcomes{margin:0;padding-left:18px;display:grid;gap:4px;font-size:14px}
+
+/* Success */
+.ticket{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.ticket-top{padding:18px 20px;background:var(--blue);color:var(--blue-ink)}
+.ticket-top .ref{font:500 22px/1.2 var(--f-mono);letter-spacing:.06em}
+.ticket-body{padding:16px 20px;display:grid;gap:8px;font-size:14px;border-top:2px dashed var(--line)}
+
+/* Mine + organizer */
+.page-head{padding-block:32px 20px;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.page-head h1{font-size:clamp(28px,4vw,40px);font-weight:800}
+.page-head p{color:var(--muted);margin:6px 0 0}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin-bottom:16px}
+.list{display:grid;gap:0}
+.row{display:grid;grid-template-columns:52px 1fr auto;gap:14px;align-items:center;padding-block:12px;border-top:1px solid var(--line)}
+.row:first-child{border-top:0}
+.row .mm{font:500 12px var(--f-mono);letter-spacing:.08em;color:var(--muted)}
+.row .t{font-weight:600}
+.row .s{font-size:12.5px;color:var(--muted)}
+.empty{text-align:center;padding:36px 16px;color:var(--muted)}
+.empty h3{color:var(--ink);font-size:18px;margin-bottom:6px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
+.kpi b{display:block;font:700 28px/1.1 var(--f-display);font-variant-numeric:tabular-nums}
+.kpi span{font-size:12.5px;color:var(--muted)}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font:500 11px/1.2 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--surface-2);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.tools input,.tools select{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:8px 10px;font-size:14px;min-width:0}
+.tools input{flex:1 1 200px}
+.editrow td{background:var(--surface-2)}
+.editgrid{display:grid;grid-template-columns:repeat(4,minmax(120px,1fr));gap:10px;align-items:end}
+.switch{position:relative;width:38px;height:22px;flex:none}
+.switch input{opacity:0;position:absolute;inset:0;margin:0;cursor:pointer}
+.switch span{position:absolute;inset:0;border-radius:11px;background:var(--line);transition:.15s;pointer-events:none}
+.switch span::after{content:"";position:absolute;left:3px;top:3px;width:16px;height:16px;border-radius:50%;background:var(--surface);transition:.15s}
+.switch input:checked+span{background:var(--ok)}
+.switch input:checked+span::after{transform:translateX(16px)}
+.switch input:focus-visible+span{outline:2px solid var(--blue);outline-offset:2px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;font-size:14px;z-index:80;box-shadow:var(--shadow);max-width:calc(100% - 32px)}
+footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:12.5px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+@media (max-width:860px){
+  .hero{grid-template-columns:1fr;gap:20px;padding-block:28px 20px}
+  .ribbon{grid-template-columns:repeat(6,1fr)}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .editgrid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:520px){
+  .grid{grid-template-columns:1fr}
+  .fields{grid-template-columns:1fr}
+  .ribbon{grid-template-columns:repeat(4,1fr)}
+  .brand-text span{display:none}
+  nav.tabs{width:100%;justify-content:space-between}
+  nav.tabs button{padding:7px 10px;flex:1}
+  .evpick label{grid-template-columns:auto 38px 1fr}
+  .evpick .st{grid-column:3}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <div class="seal" aria-hidden="true"><b>SDF</b></div>
+      <div class="brand-text"><strong>Skills Development Fund</strong><span>មូលនិធិអភិវឌ្ឍន៍ជំនាញ · Events 2027</span></div>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Sections">
+      <button role="tab" id="tab-events" data-view="events" aria-selected="true">Events</button>
+      <button role="tab" id="tab-mine" data-view="mine" aria-selected="false">My registrations<span class="count" id="mineCount" hidden>0</span></button>
+      <button role="tab" id="tab-organizer" data-view="organizer" aria-selected="false" hidden>Organizer</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- EVENTS -->
+  <section id="view-events">
+    <div class="hero">
+      <div>
+        <div class="eyebrow">SDF Annual Event Programme · AWPB 2027</div>
+        <h1>Twelve events.<br>One for every month of <em>2027.</em></h1>
+        <p class="lead">Stakeholder forums, sector workshops and ceremonies for government, industry, training providers and development partners. Pick the events that matter to your organization and register once.</p>
+      </div>
+      <div class="facts">
+        <div><b>12</b><span>events</span></div>
+        <div><b>7</b><span>priority sectors</span></div>
+        <div><b id="factRegs">—</b><span>registrations</span></div>
+      </div>
+    </div>
+    <div class="ribbon" id="ribbon" aria-label="Events by month"></div>
+    <div id="dbNotice"></div>
+    <div class="bar-row">
+      <div class="chips" id="chips" role="group" aria-label="Filter by format"></div>
+      <span class="seats" id="shownCount"></span>
+    </div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <!-- MINE -->
+  <section id="view-mine" hidden>
+    <div class="page-head">
+      <div>
+        <div class="eyebrow">Your registrations</div>
+        <h1 id="mineTitle">My registrations</h1>
+        <p id="mineSub">Events you've signed up for, and the details SDF will use to contact you.</p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn ghost" id="editMine" hidden>Edit my details</button>
+        <button class="btn" id="addMore">Register for events</button>
+      </div>
+    </div>
+    <div id="mineBody"></div>
+  </section>
+
+  <!-- ORGANIZER -->
+  <section id="view-organizer" hidden>
+    <div class="page-head">
+      <div>
+        <div class="eyebrow">Engagement Unit</div>
+        <h1>Organizer console</h1>
+        <p>Set dates, venues and capacity, open or close registration, and see who has signed up. Only people who can edit this page see this tab.</p>
+      </div>
+      <button class="btn" id="exportCsv">Export CSV</button>
+    </div>
+    <div class="kpis" id="kpis"></div>
+    <div class="section-title"><span>Event settings</span></div>
+    <div class="tablewrap" style="margin-bottom:28px"><table id="evTable"></table></div>
+    <div class="section-title"><span>Registrants</span><span id="regCount"></span></div>
+    <div class="tools">
+      <input id="regSearch" type="search" placeholder="Search name, organization or email" aria-label="Search registrants">
+      <select id="regFilter" aria-label="Filter by event"></select>
+    </div>
+    <div class="tablewrap"><table id="regTable"></table></div>
+  </section>
+
+  <footer>
+    <span>Skills Development Fund · Engagement Unit · Annual Events Programme 2027</span>
+    <span>Dates and venues marked “to be confirmed” will be updated here.</span>
+  </footer>
+</main>
+
+<div class="scrim" id="drawer" hidden>
+  <div class="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" id="drawerPanel"></div>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+(function(){
+"use strict";
+const MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const MONTHS_FULL=["January","February","March","April","May","June","July","August","September","October","November","December"];
+const FORMATS={flagship:"Flagship",workshop:"Sector workshop",forum:"Forum",expo:"Expo"};
+const AUDIENCE=["Government","SDF members & partners","Prospective members","Federations & associations","Large firms & enterprises","SME owners & management"];
+const ORG_TYPES=["Government ministry or agency","SDF member / partner organization","Prospective member","Federation or industry association","Large firm or enterprise","SME owner or management","Training provider / TVET institution","Development partner","Media","Other"];
+
+const EVENTS=[
+ {id:"e01",m:0,format:"flagship",short:"i-Lead launch",title:"i-Lead: Leading Skills, Leading the Future",sub:"Official launch and MoU signing",focus:"i-Lead programme launch",blurb:"The year opens with the official launch of the i-Lead programme and the signing of memoranda of understanding with SDF partners."},
+ {id:"e02",m:1,format:"workshop",short:"Agro-industry",title:"From Farm to Factory: Skilling Agro-Industry for Value Growth",sub:"Agro-industry capacity building",focus:"Agro-industry capacity building",blurb:"Employers, associations and training providers look at the skills agro-processing firms need to add value and grow."},
+ {id:"e03",m:2,format:"workshop",short:"Green energy",title:"Powering Tomorrow: Skills for a Green Energy Transition",sub:"Green energy capacity building",focus:"Green energy capacity building",blurb:"A working session on the technical skills Cambodia's energy transition will demand, and how SDF co-funding can help build them."},
+ {id:"e04",m:3,format:"workshop",short:"Construction",title:"Building Skills, Building Cambodia",sub:"Safety, standards and certified trades",focus:"Construction capacity building",blurb:"Site safety, construction standards and certified trades, with contractors and training providers in the same room."},
+ {id:"e05",m:4,format:"workshop",short:"Digital",title:"Digital Skills Next: Talent for a Connected Economy",sub:"Digital & electronics capacity building",focus:"Digital & electronic capacity building",blurb:"Digital and electronics employers share the roles they struggle to fill, and providers show how training is keeping up."},
+ {id:"e06",m:5,format:"workshop",short:"Manufacturing",title:"Smart Factory Skills: Productivity Through People",sub:"Manufacturing capacity building",focus:"Manufacturing capacity building",blurb:"How factories raise productivity through workforce skills, from line supervisors to maintenance technicians."},
+ {id:"e07",m:6,format:"forum",short:"Industry–training",title:"Bridging Industry and Training: What Employers Need, What Providers Deliver",sub:"Mid-year review & industry–training linkage forum",focus:"Mid-year review & industry–training linkage forum",blurb:"A mid-year review and open forum that puts employer demand and training supply side by side."},
+ {id:"e08",m:7,format:"workshop",short:"Tourism",title:"Hospitality Ready: Service Excellence for Cambodia's Visitor Economy",sub:"Tourism capacity building",focus:"Tourism capacity building",blurb:"Hotels, tour operators and hospitality schools on the service skills behind a stronger visitor economy."},
+ {id:"e09",m:8,format:"workshop",short:"Automotive",title:"Driving Skills Forward: From Workshop to EV Readiness",sub:"Automotive capacity building",focus:"Automotive capacity building",blurb:"From today's service workshop to electric vehicles: the skills automotive businesses and technicians will need next."},
+ {id:"e10",m:9,format:"expo",short:"Skills for All",title:"Skills for All: Youth, Women and Emerging Workers in Focus",sub:"Inclusive skills & youth employment expo",focus:"Inclusive skills & youth employment expo",blurb:"An expo on inclusive skills development, connecting young people, women and new entrants to training and jobs."},
+ {id:"e11",m:10,format:"flagship",short:"Awards",title:"Celebrating Excellence in Skills: SDF Employer & Training Provider Awards 2027",sub:"Employer & training provider award ceremony",focus:"Employer & training providers award ceremony",blurb:"SDF recognizes the employers and training providers whose partnerships delivered the strongest results this year."},
+ {id:"e12",m:11,format:"flagship",short:"Skills Summit",title:"Skills Summit 2027",sub:"Results, impact stories and the 2028 outlook",focus:"SDF annual event",blurb:"The closing summit: the year's results, impact stories from enterprises and trainees, and SDF's outlook for 2028."}
+];
+const byId=Object.fromEntries(EVENTS.map(e=>[e.id,e]));
+
+const A=(t,s,w)=>({t,s,w:w||""});
+const SPECIAL_AGENDAS={
+ e01:[A("08:00","Registration and welcome coffee"),A("08:30","Welcome remarks","SDF"),A("08:45","Opening address","Guest of honour (TBC)"),A("09:15","Introducing i-Lead: Leading Skills, Leading the Future","SDF"),A("09:45","MoU signing ceremony","SDF and partner organizations"),A("10:15","Group photo and press briefing"),A("10:45","Panel: leadership skills for a competitive workforce","Industry and government leaders"),A("11:45","Closing remarks","SDF"),A("12:00","Networking lunch")],
+ e07:[A("08:00","Registration and welcome coffee"),A("08:30","Opening remarks","SDF"),A("08:45","Mid-year review: SDF results, January–June 2027","SDF"),A("09:30","Employer panel: what we need from training","Employers and industry associations"),A("10:30","Coffee break and networking"),A("10:45","Provider panel: what we can deliver","Training providers and TVET institutions"),A("11:30","Roundtables: matching industry demand with training supply"),A("12:15","Wrap-up and next steps","SDF"),A("12:30","Lunch")],
+ e10:[A("08:00","Expo opens and registration"),A("09:00","Opening ceremony","SDF and guest of honour (TBC)"),A("09:30","Talk: skills pathways for youth, women and new workers","Speakers (TBC)"),A("10:30","Employer and training provider booths open"),A("13:30","Workshop: CV writing and interview skills"),A("15:00","Success stories from SDF-supported trainees"),A("16:00","Closing and lucky draw"),A("16:30","Expo closes")],
+ e11:[A("17:30","Guest arrival and registration"),A("18:00","Welcome remarks","SDF"),A("18:15","Keynote address","Guest of honour (TBC)"),A("18:30","Awards: employer categories"),A("19:15","Dinner"),A("20:00","Awards: training provider categories"),A("20:45","Closing remarks and group photo","SDF")],
+ e12:[A("08:00","Registration and welcome coffee"),A("08:30","Opening remarks","SDF"),A("08:45","Keynote address","Guest of honour (TBC)"),A("09:15","SDF 2027: results and impact","SDF"),A("10:00","Impact stories from enterprises and trainees"),A("10:45","Coffee break and networking"),A("11:00","Panel: skills priorities for 2028","Government, industry and development partners"),A("11:45","SDF outlook for 2028","SDF"),A("12:15","Closing remarks"),A("12:30","Networking lunch")]
+};
+function defaultAgenda(e){
+  if(SPECIAL_AGENDAS[e.id])return SPECIAL_AGENDAS[e.id];
+  const sector=e.short.toLowerCase();
+  return [A("08:00","Registration and welcome coffee"),A("08:30","Opening remarks","SDF"),A("08:45",`Keynote: skills priorities in ${sector}`,"Industry representative (TBC)"),A("09:15","Panel: skills gaps and what employers need","Employers, associations and training providers"),A("10:15","Coffee break and networking"),A("10:30","SDF co-funding: how your organization can apply","SDF"),A("11:00","Group discussion: workforce needs and next steps"),A("11:40","Q&A and wrap-up","SDF"),A("12:00","Networking lunch")];
+}
+const OUTCOMES=["A clear view of employer skills needs and emerging jobs in this area","How SDF co-funding works and how to apply","Contacts for partnerships, co-financing and joint training"];
+function agendaToText(list){return list.map(a=>[a.t,a.s,a.w].filter((x,i)=>i<2||x).join(" | ")).join("\n")}
+function textToAgenda(txt){return txt.split("\n").map(l=>l.trim()).filter(Boolean).map(l=>{const p=l.split("|").map(x=>x.trim());return p.length===1?A("",p[0]):A(p[0],p[1]||"",p[2]||"")}).filter(a=>a.s)}
+
+const S={view:"events",filter:"all",settings:{},seats:{},myReg:null,allRegs:[],uid:null,db:null,user:null,canEdit:false,canWrite:null,dbState:"loading",editing:null,highlight:null,pendingCancel:null};
+
+const $=s=>document.querySelector(s);
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const ICON={
+ cal:'<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="11" rx="1.5"/><path d="M2 6.5h12M5.5 1.5v3M10.5 1.5v3"/></svg>',
+ pin:'<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 14.5s4.5-4.2 4.5-7.7A4.5 4.5 0 0 0 3.5 6.8c0 3.5 4.5 7.7 4.5 7.7z"/><circle cx="8" cy="6.8" r="1.6"/></svg>',
+ x:'<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9"/></svg>'
+};
+
+function cfg(id){const s=S.settings[id]||{};return{date:s.date||"",time:s.time||"",venue:s.venue||"",capacity:Number.isFinite(+s.capacity)&&+s.capacity>0?+s.capacity:null,open:s.open!==false,agenda:Array.isArray(s.agenda)&&s.agenda.length?s.agenda:null,agendaConfirmed:!!s.agendaConfirmed}}
+function dateLabel(e){const c=cfg(e.id);if(!c.date)return MONTHS_FULL[e.m]+" 2027 · date to be confirmed";const d=new Date(c.date+"T00:00:00");return d.toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"long",year:"numeric"})+(c.time?" · "+c.time:"")}
+function dayNum(e){const c=cfg(e.id);return c.date?String(new Date(c.date+"T00:00:00").getDate()):"TBC"}
+function venueLabel(e){return cfg(e.id).venue||"Venue to be announced"}
+function isMine(id){return !!(S.myReg&&S.myReg.events&&S.myReg.events[id])}
+function status(e){const c=cfg(e.id),n=S.seats[e.id]||0;if(!c.open)return{k:"bad",t:"Registration closed",can:false};if(c.capacity&&n>=c.capacity)return{k:"bad",t:"Fully booked",can:false};if(c.capacity&&n>=c.capacity*.85)return{k:"warn",t:"Few seats left",can:true};return{k:"ok",t:"Registration open",can:true}}
+
+function toast(msg){const t=$("#toast");t.textContent=msg;t.hidden=false;clearTimeout(toast._t);toast._t=setTimeout(()=>t.hidden=true,3200)}
+
+/* ---------- Views ---------- */
+function setView(v){
+  if(v==="organizer"&&!S.canEdit)v="events";
+  S.view=v;
+  for(const b of document.querySelectorAll("nav.tabs button"))b.setAttribute("aria-selected",String(b.dataset.view===v));
+  for(const k of ["events","mine","organizer"])$("#view-"+k).hidden=k!==v;
+  try{history.replaceState(null,"","#"+v)}catch(_){}
+  render();window.scrollTo({top:0});
+}
+document.querySelectorAll("nav.tabs button").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.view)));
+
+function render(){renderEvents();renderMine();if(S.canEdit)renderOrganizer();renderHeader()}
+
+function renderHeader(){
+  const n=S.myReg?Object.keys(S.myReg.events||{}).length:0;const c=$("#mineCount");c.textContent=n;c.hidden=!n;
+  $("#tab-organizer").hidden=!S.canEdit;
+  const total=Object.values(S.seats).reduce((a,b)=>a+b,0);
+  $("#factRegs").textContent=S.dbState==="ready"?total:"—";
+}
+
+function renderEvents(){
+  $("#ribbon").innerHTML=EVENTS.map(e=>`<button data-go="${e.id}" class="${e.format==="flagship"?"flag":""} ${isMine(e.id)?"mine":""}" aria-label="${MONTHS_FULL[e.m]}: ${esc(e.title)}${isMine(e.id)?" (registered)":""}"><span class="m">${MONTHS[e.m].toUpperCase()}</span><span class="s">${esc(e.short)}</span><span class="bar"></span></button>`).join("");
+  const counts={all:EVENTS.length};EVENTS.forEach(e=>counts[e.format]=(counts[e.format]||0)+1);
+  $("#chips").innerHTML=[["all","All events"],...Object.entries(FORMATS)].map(([k,l])=>`<button class="chip" data-filter="${k}" aria-pressed="${S.filter===k}">${l} <span class="mono" style="opacity:.6">${counts[k]||0}</span></button>`).join("");
+  const list=EVENTS.filter(e=>S.filter==="all"||e.format===S.filter);
+  $("#shownCount").textContent=`Showing ${list.length} of 12`;
+  $("#dbNotice").innerHTML=S.dbState==="off"?`<div class="notice"><div><b>Registration isn't available in this view.</b> Open this page from its claude.ai link while signed in to register. You can still browse the programme.</div></div>`:S.canWrite===false?`<div class="notice"><div><b>You can browse, but not register, with your current access.</b> Ask the SDF Engagement Unit to give you “Can interact” access to this page.</div></div>`:"";
+  $("#grid").innerHTML=list.map(e=>{
+    const st=status(e),c=cfg(e.id),n=S.seats[e.id]||0,mine=isMine(e.id);
+    const seatTxt=S.dbState!=="ready"?"":c.capacity?`${n} of ${c.capacity} seats taken<div class="meter"><i style="width:${Math.min(100,n/c.capacity*100)}%"></i></div>`:`${n} registered`;
+    return `<article class="card ${e.format==="flagship"?"flagship":""} ${S.highlight===e.id?"hl":""}" id="card-${e.id}">
+      <div class="card-head">
+        <div class="datebox" aria-hidden="true"><div class="mo">${MONTHS[e.m].toUpperCase()}</div><div class="d">${dayNum(e)}</div></div>
+        <div style="min-width:0">
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px"><span class="tag ${e.format==="flagship"?"flagship":""}">${FORMATS[e.format]}</span>${mine?'<span class="pill me">You\'re registered</span>':`<span class="pill ${st.k}">${st.t}</span>`}</div>
+          <h3>${esc(e.title)}</h3>
+          <div class="sub">${esc(e.sub)}</div>
+        </div>
+      </div>
+      <div class="meta"><div>${ICON.cal}<span>${esc(dateLabel(e))}</span></div><div>${ICON.pin}<span>${esc(venueLabel(e))}</span></div></div>
+      <div class="card-foot">
+        <div class="seats">${seatTxt}</div>
+        <div style="display:flex;gap:8px">
+          <button class="btn ghost small" data-details="${e.id}">Details</button>
+          ${mine?`<button class="btn ghost small" data-view-mine>Manage</button>`:`<button class="btn small" data-register="${e.id}" ${st.can?"":"disabled"}>Register</button>`}
+        </div>
+      </div>
+    </article>`}).join("");
+}
+
+document.addEventListener("click",ev=>{
+  const t=ev.target.closest("[data-go],[data-filter],[data-details],[data-register],[data-view-mine],[data-close],[data-cancel],[data-cancel-yes],[data-cancel-no],[data-edit-ev],[data-save-ev],[data-cancel-ev]");
+  if(!t)return;
+  if(t.dataset.go){const id=t.dataset.go;S.filter="all";S.highlight=id;renderEvents();const c=$("#card-"+id);c&&c.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth",block:"center"});setTimeout(()=>{if(S.highlight===id){S.highlight=null;const el=$("#card-"+id);el&&el.classList.remove("hl")}},2200)}
+  else if(t.dataset.filter){S.filter=t.dataset.filter;renderEvents()}
+  else if(t.dataset.details)openDetails(t.dataset.details);
+  else if(t.dataset.register)openForm([t.dataset.register]);
+  else if(t.hasAttribute("data-view-mine")){closeDrawer();setView("mine")}
+  else if(t.hasAttribute("data-close"))closeDrawer();
+  else if(t.dataset.cancel){S.pendingCancel=t.dataset.cancel;renderMine()}
+  else if(t.hasAttribute("data-cancel-no")){S.pendingCancel=null;renderMine()}
+  else if(t.dataset.cancelYes)cancelEvent(t.dataset.cancelYes);
+  else if(t.dataset.editEv){S.editing=t.dataset.editEv;renderOrganizer()}
+  else if(t.hasAttribute("data-cancel-ev")){S.editing=null;renderOrganizer()}
+  else if(t.dataset.saveEv)saveEventSettings(t.dataset.saveEv);
+});
+
+/* ---------- Drawer ---------- */
+let lastFocus=null;
+function openDrawer(html){lastFocus=document.activeElement;$("#drawerPanel").innerHTML=html;$("#drawer").hidden=false;document.body.style.overflow="hidden";const f=$("#drawerPanel").querySelector("input,select,button.x");f&&f.focus()}
+function closeDrawer(){$("#drawer").hidden=true;document.body.style.overflow="";lastFocus&&lastFocus.focus&&lastFocus.focus()}
+$("#drawer").addEventListener("click",e=>{if(e.target.id==="drawer")closeDrawer()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#drawer").hidden)closeDrawer()});
+
+function openDetails(id){
+  const e=byId[id],st=status(e),mine=isMine(id),c=cfg(id),n=S.seats[id]||0;
+  openDrawer(`<div class="drawer-head"><div><div class="eyebrow" style="margin-bottom:6px">${MONTHS_FULL[e.m]} 2027 · ${FORMATS[e.format]}</div><h2 id="drawerTitle">${esc(e.title)}</h2></div><button class="x" data-close aria-label="Close">${ICON.x}</button></div>
+  <div class="drawer-body">
+    <p style="margin:0;font-size:15.5px">${esc(e.blurb)}</p>
+    <dl class="detail-grid">
+      <dt>When</dt><dd>${esc(dateLabel(e))}</dd>
+      <dt>Where</dt><dd>${esc(venueLabel(e))}</dd>
+      <dt>Focus</dt><dd>${esc(e.focus)}</dd>
+      ${S.dbState==="ready"?`<dt>Seats</dt><dd class="mono">${c.capacity?`${n} of ${c.capacity} taken`:`${n} registered · no cap set`}</dd>`:""}
+      <dt>Status</dt><dd>${mine?'<span class="pill me">You\'re registered</span>':`<span class="pill ${st.k}">${st.t}</span>`}</dd>
+    </dl>
+    <div>
+      <div class="section-title"><span>Agenda</span>${c.agendaConfirmed?'<span class="pill ok">Confirmed</span>':'<span class="pill warn">Draft · subject to change</span>'}</div>
+      <ol class="agenda">${(c.agenda||defaultAgenda(e)).map(a=>`<li><span class="at mono">${esc(a.t||"—")}</span><div><div class="as">${esc(a.s)}</div>${a.w?`<div class="aw">${esc(a.w)}</div>`:""}</div></li>`).join("")}</ol>
+    </div>
+    <div><div class="section-title">What you'll take away</div><ul class="outcomes">${OUTCOMES.map(o=>`<li>${o}</li>`).join("")}</ul></div>
+    <div><div class="section-title">Who should attend</div><div class="aud">${AUDIENCE.map(a=>`<span class="tag">${a}</span>`).join("")}</div></div>
+    <div class="notice info" style="margin:0">Registered participants will receive the full concept note, final agenda and venue details by email before the event.</div>
+    <div class="formfoot">${mine?`<button class="btn" data-view-mine>Manage my registration</button>`:`<button class="btn ghost" data-close>Close</button><button class="btn" data-register="${id}" ${st.can?"":"disabled"}>Register for this event</button>`}</div>
+  </div>`);
+}
+
+function openForm(preselect,opts={}){
+  const r=S.myReg||{};const selected=new Set([...Object.keys(r.events||{}),...(preselect||[])]);
+  const disabled=S.dbState!=="ready"||S.canWrite===false;
+  openDrawer(`<div class="drawer-head"><div><div class="eyebrow" style="margin-bottom:6px">${opts.editOnly?"Update your details":"Registration"}</div><h2 id="drawerTitle">${opts.editOnly?"Your contact details":"Register for SDF events 2027"}</h2></div><button class="x" data-close aria-label="Close">${ICON.x}</button></div>
+  <form class="drawer-body" id="regForm" novalidate>
+    ${disabled?`<div class="notice" style="margin:0">${S.dbState!=="ready"?"Registration isn't available in this view. Open the page from its claude.ai link while signed in.":"Your access to this page doesn't allow registering. Ask the SDF Engagement Unit for “Can interact” access."}</div>`:""}
+    <div>
+      <div class="section-title"><span>About you</span></div>
+      <div class="fields">
+        ${field("fullName","Full name",r.fullName,"text",true,"name")}
+        ${field("position","Position / job title",r.position,"text",true,"organization-title")}
+        ${field("organization","Organization",r.organization,"text",true,"organization","full")}
+        <label class="f full" id="w-orgType">Organization type<select id="orgType" required><option value="">Choose one</option>${ORG_TYPES.map(o=>`<option ${r.orgType===o?"selected":""}>${o}</option>`).join("")}</select><span class="err" hidden></span></label>
+        ${field("email","Email",r.email,"email",true,"email")}
+        ${field("phone","Phone",r.phone,"tel",true,"tel")}
+      </div>
+    </div>
+    ${opts.editOnly?"":`<div>
+      <div class="section-title"><span>Events</span><span id="pickCount" class="mono"></span></div>
+      <div class="evpick" id="evpick">${EVENTS.map(e=>{const st=status(e),has=isMine(e.id);const dis=!st.can&&!has;return `<label class="${dis?"dis":""}"><input type="checkbox" name="ev" value="${e.id}" ${selected.has(e.id)&&!dis?"checked":""} ${dis?"disabled":""}><span class="mm">${MONTHS[e.m].toUpperCase()}</span><span>${esc(e.title)}</span><span class="st">${has?"Registered":dis?st.t:""}</span></label>`}).join("")}</div>
+      <span class="f"><span class="err" id="evErr" hidden>Choose at least one event.</span></span>
+    </div>`}
+    <label class="f"><span>Accessibility or dietary needs <span class="opt">(optional)</span></span><textarea id="needs" rows="2">${esc(r.needs||"")}</textarea></label>
+    <label class="check"><input type="checkbox" id="consent" ${r.consent?"checked":""}><span>I agree that SDF may contact me about the events I register for and share event materials with me.</span></label>
+    <span class="f"><span class="err" id="consentErr" hidden>Please confirm so SDF can send you event details.</span></span>
+    <div class="formfoot"><span class="formerr" id="formErr"></span><button type="button" class="btn ghost" data-close>Cancel</button><button type="submit" class="btn" id="submitBtn" ${disabled?"disabled":""}>${opts.editOnly?"Save details":S.myReg?"Update registration":"Complete registration"}</button></div>
+  </form>`);
+  const upd=()=>{const n=document.querySelectorAll('#evpick input:checked').length;const pc=$("#pickCount");if(pc)pc.textContent=n+" selected"};upd();
+  $("#evpick")&&$("#evpick").addEventListener("change",upd);
+  $("#regForm").addEventListener("submit",ev=>{ev.preventDefault();submit(opts)});
+}
+function field(id,label,val,type,req,ac,cls){return `<label class="f ${cls||""}" id="w-${id}">${label}<input id="${id}" type="${type}" value="${esc(val||"")}" ${req?"required":""} autocomplete="${ac}"><span class="err" hidden></span></label>`}
+
+function validate(){
+  let ok=true;const v=id=>($("#"+id).value||"").trim();
+  const setErr=(id,msg)=>{const w=$("#w-"+id),e=w.querySelector(".err");w.classList.toggle("invalid",!!msg);e.hidden=!msg;e.textContent=msg||"";if(msg)ok=false};
+  setErr("fullName",v("fullName")?"":"Enter your full name.");
+  setErr("position",v("position")?"":"Enter your position.");
+  setErr("organization",v("organization")?"":"Enter your organization.");
+  setErr("orgType",v("orgType")?"":"Choose your organization type.");
+  setErr("email",/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v("email"))?"":"Enter a valid email, like name@company.com.");
+  setErr("phone",v("phone").replace(/\D/g,"").length>=8?"":"Enter a phone number with at least 8 digits.");
+  const c=$("#consent").checked;$("#consentErr").hidden=c;if(!c)ok=false;
+  return ok;
+}
+
+function refCode(){const a="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";let s="";const b=new Uint32Array(5);crypto.getRandomValues(b);b.forEach(x=>s+=a[x%a.length]);return "SDF27-"+s}
+
+async function submit(opts){
+  if(!validate()){$("#formErr").textContent="Check the highlighted fields.";const bad=document.querySelector(".f.invalid input,.f.invalid select");bad&&bad.focus();return}
+  const prev=S.myReg||{};let events={...(prev.events||{})};
+  if(!opts.editOnly){
+    const picked=[...document.querySelectorAll('#evpick input:checked')].map(i=>i.value);
+    if(!picked.length){$("#evErr").hidden=false;$("#formErr").textContent="Choose at least one event.";return}
+    $("#evErr").hidden=true;
+    const next={};const now=new Date().toISOString();
+    picked.forEach(id=>next[id]=events[id]||{registeredAt:now});
+    events=next;
+  }
+  const v=id=>$("#"+id).value.trim();
+  const doc={ref:prev.ref||refCode(),fullName:v("fullName"),position:v("position"),organization:v("organization"),orgType:v("orgType"),email:v("email"),phone:v("phone"),needs:v("needs"),consent:true,events,createdAt:prev.createdAt||new Date().toISOString(),updatedAt:new Date().toISOString()};
+  const btn=$("#submitBtn");btn.disabled=true;btn.textContent="Saving…";$("#formErr").textContent="";
+  const added=Object.keys(events).filter(id=>!(prev.events||{})[id]);
+  try{
+    await writeReg(doc);
+    S.myReg=doc;render();
+    if(opts.editOnly){closeDrawer();toast("Details saved")}
+    else showTicket(doc,added);
+  }catch(e){
+    btn.disabled=false;btn.textContent="Try again";
+    $("#formErr").textContent=e&&e.code==="invalid_argument"?"Your access to this page doesn't allow registering. Ask the SDF Engagement Unit for “Can interact” access.":e&&e.code==="quota_exceeded"?"Registration is full for now. Contact the SDF Engagement Unit.":"Couldn't save your registration. Check your connection and try again.";
+    if(e&&e.code==="invalid_argument"){S.canWrite=false}
+  }
+}
+
+async function withRetry(fn){try{return await fn()}catch(e){if(e&&e.code==="unavailable"){await new Promise(r=>setTimeout(r,400+Math.random()*600));return fn()}throw e}}
+async function writeReg(doc){
+  if(!S.db||!S.uid)throw{code:"unavailable"};
+  await withRetry(()=>S.db.doc("registrations/"+S.uid).set(doc));
+  await withRetry(()=>S.db.doc("seats/"+S.uid).set({events:Object.keys(doc.events),updatedAt:doc.updatedAt}));
+}
+
+function showTicket(doc,added){
+  const ids=Object.keys(doc.events).sort();
+  $("#drawerPanel").innerHTML=`<div class="drawer-head"><div><div class="eyebrow" style="margin-bottom:6px">Registration saved</div><h2 id="drawerTitle">You're registered, ${esc(doc.fullName.split(" ")[0])}.</h2></div><button class="x" data-close aria-label="Close">${ICON.x}</button></div>
+  <div class="drawer-body">
+    <div class="ticket">
+      <div class="ticket-top"><div class="eyebrow" style="color:inherit;opacity:.8">Your reference</div><div class="ref">${esc(doc.ref)}</div></div>
+      <div class="ticket-body">
+        ${ids.map(id=>{const e=byId[id];return `<div style="display:flex;gap:10px"><span class="mono" style="color:var(--muted);width:34px;flex:none">${MONTHS[e.m].toUpperCase()}</span><span>${esc(e.title)}${added.includes(id)?' <span class="pill ok" style="margin-left:4px">New</span>':""}</span></div>`}).join("")}
+      </div>
+    </div>
+    <p style="margin:0;color:var(--muted)">Keep your reference for check-in. SDF will contact you at <b style="color:var(--ink)">${esc(doc.email)}</b> with the concept note, agenda and venue details before each event. You can change or cancel any time under “My registrations”.</p>
+    <div class="formfoot"><button class="btn ghost" data-close>Back to events</button><button class="btn" data-view-mine>View my registrations</button></div>
+  </div>`;
+}
+
+/* ---------- Mine ---------- */
+$("#addMore").addEventListener("click",()=>openForm([]));
+$("#editMine").addEventListener("click",()=>openForm([],{editOnly:true}));
+function renderMine(){
+  const r=S.myReg,ids=r?Object.keys(r.events||{}).sort():[];
+  $("#editMine").hidden=!r;
+  $("#mineTitle").textContent=r?`${r.fullName.split(" ")[0]}'s registrations`:"My registrations";
+  if(S.dbState==="loading"){$("#mineBody").innerHTML=`<div class="panel empty">Loading your registrations…</div>`;return}
+  if(S.dbState==="off"){$("#mineBody").innerHTML=`<div class="panel empty"><h3>Registrations aren't available in this view</h3>Open this page from its claude.ai link while signed in.</div>`;return}
+  if(!r||!ids.length){$("#mineBody").innerHTML=`<div class="panel empty"><h3>You haven't registered for any events yet</h3><p style="margin:0 0 14px">Browse the 2027 programme and pick the events you'd like to attend.</p><button class="btn" onclick="document.getElementById('tab-events').click()">Browse events</button></div>`;return}
+  $("#mineBody").innerHTML=`
+  <div class="panel"><div class="section-title"><span>Registered events</span><span class="mono">Ref ${esc(r.ref)}</span></div>
+    <div class="list">${ids.map(id=>{const e=byId[id];const pend=S.pendingCancel===id;return `<div class="row"><span class="mm">${MONTHS[e.m].toUpperCase()}</span><div><div class="t">${esc(e.title)}</div><div class="s">${esc(dateLabel(e))} · ${esc(venueLabel(e))}</div></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">${pend?`<button class="btn danger small" data-cancel-yes="${id}">Yes, cancel</button><button class="btn ghost small" data-cancel-no>Keep</button>`:`<button class="btn ghost small" data-cancel="${id}">Cancel</button>`}</div></div>`}).join("")}</div>
+  </div>
+  <div class="panel"><div class="section-title"><span>Contact details</span></div>
+    <dl class="detail-grid"><dt>Name</dt><dd>${esc(r.fullName)}</dd><dt>Position</dt><dd>${esc(r.position)}</dd><dt>Organization</dt><dd>${esc(r.organization)} <span style="color:var(--muted)">· ${esc(r.orgType)}</span></dd><dt>Email</dt><dd>${esc(r.email)}</dd><dt>Phone</dt><dd>${esc(r.phone)}</dd>${r.needs?`<dt>Needs</dt><dd>${esc(r.needs)}</dd>`:""}</dl>
+  </div>`;
+}
+async function cancelEvent(id){
+  const r=S.myReg;if(!r)return;const events={...r.events};delete events[id];
+  const doc={...r,events,updatedAt:new Date().toISOString()};
+  try{await writeReg(doc);S.myReg=doc;S.pendingCancel=null;render();toast("Cancelled: "+byId[id].short)}
+  catch(e){toast("Couldn't cancel. Try again.")}
+}
+
+/* ---------- Organizer ---------- */
+function renderOrganizer(){
+  const regs=S.allRegs.filter(r=>Object.keys(r.events||{}).length);
+  const seatsTotal=regs.reduce((a,r)=>a+Object.keys(r.events).length,0);
+  const orgs=new Set(regs.map(r=>(r.organization||"").trim().toLowerCase()).filter(Boolean));
+  const openN=EVENTS.filter(e=>cfg(e.id).open).length;
+  $("#kpis").innerHTML=[[regs.length,"people registered"],[seatsTotal,"event seats booked"],[orgs.size,"organizations"],[openN+" / 12","events open"]].map(([b,s])=>`<div class="kpi"><b>${b}</b><span>${s}</span></div>`).join("");
+  $("#evTable").innerHTML=`<thead><tr><th>Month</th><th>Event</th><th>Date & time</th><th>Venue</th><th>Registered</th><th>Open</th><th></th></tr></thead><tbody>${EVENTS.map(e=>{
+    const c=cfg(e.id),n=S.seats[e.id]||0;
+    const row=`<tr><td class="mono">${MONTHS[e.m].toUpperCase()}</td><td style="min-width:220px"><b>${esc(e.short)}</b><div style="color:var(--muted);font-size:12.5px">${esc(e.title)}</div></td><td class="num">${c.date?esc(c.date)+(c.time?"<br><span style='color:var(--muted)'>"+esc(c.time)+"</span>":""):'<span style="color:var(--muted)">TBC</span>'}</td><td style="min-width:140px">${c.venue?esc(c.venue):'<span style="color:var(--muted)">TBC</span>'}</td><td class="num">${n}${c.capacity?" / "+c.capacity:""}${c.capacity?`<div class="meter"><i style="width:${Math.min(100,n/c.capacity*100)}%"></i></div>`:""}</td><td><label class="switch" title="Registration open"><input type="checkbox" data-toggle="${e.id}" ${c.open?"checked":""} aria-label="Registration open for ${esc(e.short)}"><span></span></label></td><td><button class="btn ghost small" data-edit-ev="${e.id}">Edit</button></td></tr>`;
+    const edit=S.editing===e.id?`<tr class="editrow"><td colspan="7"><div class="editgrid">
+      <label class="f">Date<input type="date" id="ed-date" min="2027-01-01" max="2027-12-31" value="${esc(c.date)}"></label>
+      <label class="f">Time<input type="text" id="ed-time" placeholder="08:30–12:00" value="${esc(c.time)}"></label>
+      <label class="f">Venue<input type="text" id="ed-venue" placeholder="Hotel, Phnom Penh" value="${esc(c.venue)}"></label>
+      <label class="f"><span>Capacity <span class="opt">(blank = no cap)</span></span><input type="number" min="1" id="ed-cap" value="${c.capacity||""}"></label>
+      </div>
+      <label class="f" style="margin-top:10px"><span>Agenda <span class="opt">(one session per line: time | session | speaker)</span></span><textarea id="ed-agenda" rows="10" class="mono" style="font-size:13px">${esc(agendaToText(c.agenda||defaultAgenda(e)))}</textarea></label>
+      <label class="check" style="margin-top:8px"><input type="checkbox" id="ed-confirmed" ${c.agendaConfirmed?"checked":""}><span>Agenda is confirmed (removes the “Draft” label for participants)</span></label>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px"><button class="btn ghost small" data-cancel-ev>Cancel</button><button class="btn small" data-save-ev="${e.id}">Save</button></div></td></tr>`:"";
+    return row+edit}).join("")}</tbody>`;
+  const sel=$("#regFilter"),cur=sel.value||"all";
+  sel.innerHTML=`<option value="all">All events</option>`+EVENTS.map(e=>`<option value="${e.id}">${MONTHS[e.m]} · ${esc(e.short)} (${S.seats[e.id]||0})</option>`).join("");sel.value=cur;
+  renderRegTable();
+}
+function filteredRegs(){
+  const q=($("#regSearch").value||"").trim().toLowerCase(),f=$("#regFilter").value||"all";
+  return S.allRegs.filter(r=>Object.keys(r.events||{}).length).filter(r=>f==="all"||(r.events||{})[f]).filter(r=>!q||[r.fullName,r.organization,r.email,r.ref].join(" ").toLowerCase().includes(q)).sort((a,b)=>(b.updatedAt||"").localeCompare(a.updatedAt||""));
+}
+function renderRegTable(){
+  const rows=filteredRegs();$("#regCount").textContent=rows.length+" shown";
+  if(!rows.length){$("#regTable").innerHTML=`<tbody><tr><td class="empty"><h3>No registrations yet</h3>When people register, they appear here with their contact details and chosen events.</td></tr></tbody>`;return}
+  $("#regTable").innerHTML=`<thead><tr><th>Ref</th><th>Name</th><th>Organization</th><th>Contact</th><th>Events</th><th>Needs</th><th>Updated</th></tr></thead><tbody>${rows.map(r=>`<tr><td class="mono" style="white-space:nowrap">${esc(r.ref)}</td><td style="min-width:140px"><b>${esc(r.fullName)}</b><div style="color:var(--muted);font-size:12.5px">${esc(r.position)}</div></td><td style="min-width:160px">${esc(r.organization)}<div style="color:var(--muted);font-size:12.5px">${esc(r.orgType)}</div></td><td style="min-width:170px">${esc(r.email)}<div class="mono" style="color:var(--muted);font-size:12.5px">${esc(r.phone)}</div></td><td class="mono" style="min-width:120px">${Object.keys(r.events).sort().map(id=>MONTHS[byId[id]?.m??0]).join(" · ")}</td><td style="min-width:120px;color:var(--muted)">${esc(r.needs||"—")}</td><td class="num" style="color:var(--muted)">${esc((r.updatedAt||"").slice(0,10))}</td></tr>`).join("")}</tbody>`;
+}
+$("#regSearch").addEventListener("input",renderRegTable);
+$("#regFilter").addEventListener("change",renderRegTable);
+document.addEventListener("change",async ev=>{
+  const t=ev.target.closest("[data-toggle]");if(!t)return;const id=t.dataset.toggle;
+  try{await withRetry(()=>S.db.doc("events/"+id).set({...cfg(id),open:t.checked}));toast((t.checked?"Opened: ":"Closed: ")+byId[id].short)}
+  catch(e){t.checked=!t.checked;toast("Couldn't update. Try again.")}
+});
+async function saveEventSettings(id){
+  const cap=$("#ed-cap").value.trim();
+  const data={...cfg(id),date:$("#ed-date").value,time:$("#ed-time").value.trim(),venue:$("#ed-venue").value.trim(),capacity:cap?Math.max(1,parseInt(cap,10)||0):null,agenda:textToAgenda($("#ed-agenda").value),agendaConfirmed:$("#ed-confirmed").checked};
+  try{await withRetry(()=>S.db.doc("events/"+id).set(data));S.settings[id]=data;S.editing=null;render();toast("Saved: "+byId[id].short)}
+  catch(e){toast("Couldn't save. Try again.")}
+}
+$("#exportCsv").addEventListener("click",async()=>{
+  const rows=filteredRegs();if(!rows.length){toast("Nothing to export yet");return}
+  const head=["Reference","Full name","Position","Organization","Organization type","Email","Phone","Needs",...EVENTS.map(e=>MONTHS[e.m]+" - "+e.short),"Updated"];
+  const q=v=>'"'+String(v??"").replace(/"/g,'""')+'"';
+  const csv="﻿"+[head.map(q).join(","),...rows.map(r=>[r.ref,r.fullName,r.position,r.organization,r.orgType,r.email,r.phone,r.needs,...EVENTS.map(e=>r.events[e.id]?"Yes":""),r.updatedAt].map(q).join(","))].join("\r\n");
+  const dl=await window.claude?.use?.("downloads").catch(()=>null);
+  if(!dl){toast("Export isn't available in this view");return}
+  try{await dl.save({filename:"sdf-2027-registrations.csv",data:new Blob([csv],{type:"text/csv"})});toast("Export ready")}
+  catch(e){if(e&&e.code!=="declined")toast("Couldn't export. Try again.")}
+});
+
+/* ---------- Boot ---------- */
+let initial="events";try{const h=location.hash.replace("#","");if(["events","mine","organizer"].includes(h))initial=h}catch(_){}
+render();if(initial!=="events")setView(initial);
+
+async function boot(){
+  const c=window.claude;
+  if(!c||!c.use){S.dbState="off";render();return}
+  const [db,user]=await Promise.all([c.use("db").catch(()=>null),c.use("user").catch(()=>null)]);
+  if(!db){S.dbState="off";render();return}
+  S.db=db;S.user=user;
+  if(user){
+    try{S.uid=await user.id()}catch(_){}
+    try{S.canEdit=!!(await user.canEdit())}catch(_){}
+    try{S.canWrite=await user.can("data.write")}catch(_){S.canWrite=null}
+  }
+  if(!S.uid&&S.canWrite!==false)S.canWrite=false;
+  db.collection("events").onSnapshot(snap=>{const s={};snap.docs.forEach(d=>s[d.id]=d.data());S.settings=s;render()},()=>{});
+  db.collection("seats").onSnapshot(snap=>{const s={};snap.docs.forEach(d=>{(d.data().events||[]).forEach(id=>s[id]=(s[id]||0)+1)});S.seats=s;S.dbState="ready";render()},()=>{S.dbState="ready";render()});
+  if(S.uid)db.doc("registrations/"+S.uid).onSnapshot(d=>{S.myReg=d.exists?d.data():null;S.dbState="ready";render()},()=>{});
+  if(S.canEdit)db.collection("registrations").onSnapshot(snap=>{S.allRegs=snap.docs.map(d=>d.data());render()},()=>{});
+  if(S.view==="events"&&initial==="organizer"&&S.canEdit)setView("organizer");
+  setTimeout(()=>{if(S.dbState==="loading"){S.dbState="ready";render()}},4000);
+}
+boot();
+})();
+</script>
+
+</body></html>
